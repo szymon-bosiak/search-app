@@ -11,7 +11,7 @@ const Products = ({ products, setCount, setCurrentPageUrl }: { products: any, se
     useEffect(() => {       
         setCount(pageNumber)
         setCurrentPageUrl(`https://reqres.in/api/{resource}?page=${pageNumber}+&per_page=5`);
-    }, []);
+    }, [pageNumber, setCount, setCurrentPageUrl]);
 
     if (pageNumber > 3) {
         return <h1>Error - page not found</h1>
@@ -20,12 +20,10 @@ const Products = ({ products, setCount, setCurrentPageUrl }: { products: any, se
     const updateColor = () => {
         setTimeout(() => {
             let domColors = document.querySelectorAll<HTMLElement>('.showcase_container-item');
-
             for (let i = 0; i < products.length; i++) {
                 domColors[i].style.backgroundColor = `${products[i]['color']}`;
             }
-
-        }, 5);
+        });
     }
 
     updateColor();

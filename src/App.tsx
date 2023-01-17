@@ -1,7 +1,7 @@
 import './App.css';
 import axios from 'axios';
-import { useState, useEffect, SetStateAction } from 'react'
-import { Link, Route, Routes, useParams, useSearchParams, Navigate, useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Route, Routes, useParams, Navigate, useNavigate } from 'react-router-dom'
 import SearchBar from './components/SearchBar'
 import ProductsList from './components/ProductsList'
 import ProductInfo from './components/ProductInfo'
@@ -79,11 +79,10 @@ function App() {
 
       <Routes >
         <Route path="/" element={<Navigate to="/page/1" />} />
-        <Route path='page/:id' element={<ProductsList products={products}  setCount={setCount}
-          
+        <Route path='page/:id' element={<ProductsList products={products}  setCount={setCount}         
           setCurrentPageUrl={setCurrentPageUrl} />} />
         <Route path={`product/:id`} element={<ProductInfo products={products} currentPageUrl={currentPageUrl}
-          setCurrentPageUrl={setCurrentPageUrl}  />} />
+          setCurrentPageUrl={setCurrentPageUrl} />} />
         <Route path='*' element={<h1 className='error_message'>Error - page not foun</h1>} />
         <Route path='error/' element={<ErrorPage returnToHome={returnToHome} />} />
       </Routes>
