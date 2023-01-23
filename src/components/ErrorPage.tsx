@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { MouseEventHandler } from 'react'
 
-const Error = ({ returnToHome }: {returnToHome:any}) => {
+const Error = ({ returnToHome }: {returnToHome: MouseEventHandler<HTMLButtonElement>}) => {
+
     return (
         <>
             <h1 className='error_message'>Error - item not found</h1>

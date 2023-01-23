@@ -3,7 +3,15 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { DETAIL_API_URL } from '../API';
 
-const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }: { products:any, currentPageUrl:string, setCurrentPageUrl:any }) => {
+const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }: { products: any, currentPageUrl:string, setCurrentPageUrl:Function }) => {
+
+    interface ProductsInformations {
+        id: number;
+        name: string;
+        year: number;
+        color: string;
+        pantone_value: string;
+    }
 
     const { id } = useParams();
 
@@ -11,34 +19,23 @@ const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }: { products
         axios.get(currentPageUrl).then(res => {
             setCurrentPageUrl(`${DETAIL_API_URL}${id}`);
         }).catch(err => console.log(err))
-    }, [products]);
 
-    if (Number(useParams()) > 12) {
-        return <h1>Error - page not foun</h1>
-    }
+        let domColors = document.querySelectorAll<HTMLElement>('.showcase_container-item');
+
+        for (let i = 0; i < products.length; i++) {
+            domColors[i].style.backgroundColor = `${products[i]['color']}`;
+        }
+    }, [products]);
 
     if (!products.length) {
         products = [products];
     }
 
-    const updateColor = () => {
-        setTimeout(() => {
-            let domColors = document.querySelectorAll<HTMLElement>('.showcase_container-item');
-
-            for (let i = 0; i < products.length; i++) {
-                domColors[i].style.backgroundColor = `${products[i]['color']}`;
-            }
-
-        }, 5);
-    }
-
-    updateColor();
-
     return (
         <main className="showcase">
             <div className="showcase_container">
                 {products.length &&
-                    products.map((product:any) => {
+                    products.map((product: ProductsInformations) => {
                         return (
                             <div key={product['id']}
                                 className="showcase_container-item">

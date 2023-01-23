@@ -1,16 +1,20 @@
 import React, { useState } from 'react'
 import { BiSearch } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
 
-const SearchBar = ({ products, setProducts, childData, callback, id }: { products: any, setProducts: any, childData: string, callback: any, id: string | undefined }) => {
+const SearchBar = ({ products, setProducts, childData, callback, id }: { products: any, setProducts: Function, childData: string, callback: Function, id: string | undefined }) => {
 
     const [value, setValue] = useState('');
+    const navigate = useNavigate();
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
     }
 
     const handleSearchChange = (e: { target: { value: string; }; }) => {
+        // just to limit input characters (can get read of that if database could be bigger)
         const limit = 3;
+
         setValue(e.target.value.slice(0, limit));
         callback(e.target.value.slice(0, limit));
         if (!e.target.value) return setProducts(products)
@@ -22,6 +26,10 @@ const SearchBar = ({ products, setProducts, childData, callback, id }: { product
         setValue('');
     }
 
+    function handleFocus() {
+        navigate(`/`)
+    }
+
     return (
         <header className="search_container">
             {id}
@@ -31,6 +39,7 @@ const SearchBar = ({ products, setProducts, childData, callback, id }: { product
                     type="number"
                     placeholder='Type product ID'
                     value={value}
+                    onFocus={handleFocus}
                     onChange={handleSearchChange}
                     onSubmit={handleSubmit}
                     onBlur={looseFocus}
