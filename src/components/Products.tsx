@@ -1,15 +1,10 @@
 import React, { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
+import { API_URL_BEFORE, API_URL_AFTER } from '../API';
+import { ProductsInformations, ProductsShowcase } from '../Interfaces'
 
-const ProductsElement = ({ products, setCount, setCurrentPageUrl }: { products: any, setCount: Function, setCurrentPageUrl: Function }) => {
-
-    interface ProductsInformations {
-        id: number;
-        name: string;
-        year: number;
-        color: string;
-        pantone_value: string;
-    }
+const ProductsElement = ({ products, setCount, setCurrentPageUrl }: 
+    { products: any, setCount: Function, setCurrentPageUrl: Function }) => {
 
     const navigate = useNavigate();
 
@@ -17,7 +12,7 @@ const ProductsElement = ({ products, setCount, setCurrentPageUrl }: { products: 
 
     useEffect(() => {
         setCount(pageNumber)
-        setCurrentPageUrl(`https://reqres.in/api/{resource}?page=${pageNumber}+&per_page=5`);
+        setCurrentPageUrl(`${API_URL_BEFORE}${pageNumber}${API_URL_AFTER}`); 
     }, []);
 
     useEffect(() => {
@@ -35,12 +30,13 @@ const ProductsElement = ({ products, setCount, setCurrentPageUrl }: { products: 
     <div>
           {products.length &&
               products.map((product: ProductsInformations) => {
+                  const { id, name, year } = product;
                   return (
-                      <div key={`${product['id']}`} onClick={() => navigate(`../product/${product.id}`, { replace: true })}
+                      <div key={id} onClick={() => navigate(`../product/${product.id}`, { replace: true })}
                           className="showcase_container-item clickable">
-                          <h4>{product['name']}</h4>
-                          <p>{`${product['id']} - product ID`}</p>
-                          <p>{`${product['year']} - product year`}</p>
+                          <h4>{name}</h4>
+                          <p>{id} - product ID</p>
+                          <p>{year} - product year</p>
                       </div>
                   );
               })}

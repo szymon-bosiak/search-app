@@ -7,13 +7,14 @@ import ProductsList from './components/ProductsList'
 import ProductInfo from './components/ProductInfo'
 import Pagination from './components/Pagination'
 import ErrorPage from './components/ErrorPage'
+import { API_URL_AFTER, API_URL_BEFORE, DETAIL_API_URL } from './API';
 
 function App() {
 
   const { id } = useParams();
 
   const [count, setCount] = useState(1);
-  const [currentPageUrl, setCurrentPageUrl] = useState(`https://reqres.in/api/{resource}?page=${id}+&per_page=5`);
+  const [currentPageUrl, setCurrentPageUrl] = useState(`${API_URL_BEFORE}${id}${API_URL_AFTER}`);
   const [products, setProducts] = useState([]);
   const [childData, setChildData] = useState('');
 
@@ -22,31 +23,20 @@ function App() {
   useEffect(() => {
     axios.get(currentPageUrl).then(res => {
       setProducts(res.data.data);
-    }).catch(err => errMsg())
-
+    }).catch(err => navigate(`error/`))
   }, [currentPageUrl]);
 
-  //Redirectiong to Error page on error fetching data
-  function errMsg() {
-    navigate(`error/`)
-  }
-
-  // Return to home page function visible on Error page
-  function returnToHome() {
-    navigate(`/`)
-  }
-
   //Search function
-  function callback(childData: string) {
+  function inputValue(childData: string) {
     setChildData(childData)
 
     if (childData.length !== 0) {
       setChildData((childData: string) => {
-        setCurrentPageUrl(`https://reqres.in/api/{resource}/${childData}`);
+        setCurrentPageUrl(`${DETAIL_API_URL}${childData}`);
         return currentPageUrl;
       })
     } else {
-      setCurrentPageUrl(`https://reqres.in/api/{resource}?page=${id}+&per_page=5`);
+      setCurrentPageUrl(`${API_URL_BEFORE}${id}${API_URL_AFTER}`);
       navigate(`page/1`)
       setCount(1)
     }
@@ -58,7 +48,7 @@ function App() {
       if (products.length >= 5) {
         id++;
       }
-      setCurrentPageUrl(`https://reqres.in/api/{resource}?page=${id}+&per_page=5`);
+      setCurrentPageUrl(`${API_URL_BEFORE}${id}${API_URL_AFTER}`);
       navigate(`page/${id}`)
       return id;
     });
@@ -71,7 +61,7 @@ function App() {
         id--;
       }
       navigate(`page/${id}`)
-      setCurrentPageUrl(`https://reqres.in/api/{resource}?page=${id}+&per_page=5`);
+      setCurrentPageUrl(`${API_URL_BEFORE}${id}${API_URL_AFTER}`);
       return id;
     });
   };
@@ -79,7 +69,7 @@ function App() {
   return (
     <>
       <SearchBar products={products} setProducts={setProducts} childData={childData}
-        callback={callback} id={id} />
+        inputValue={inputValue} id={id} />
 
       <Routes >
         <Route path="/" element={<Navigate to="/page/1" />} />
@@ -88,7 +78,7 @@ function App() {
         <Route path={`product/:id`} element={<ProductInfo products={products} currentPageUrl={currentPageUrl}
           setCurrentPageUrl={setCurrentPageUrl} />} />
         <Route path='*' element={<h1 className='error_message'>Error - page not found</h1>} />
-        <Route path='error/' element={<ErrorPage returnToHome={returnToHome} />} />
+        <Route path='error/' element={<ErrorPage />} />
       </Routes>
 
       <Pagination nextPage={nextPage} prevPage={prevPage} count={count} />

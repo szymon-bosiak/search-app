@@ -2,16 +2,10 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { DETAIL_API_URL } from '../API';
+import { ProductsInformations } from '../Interfaces'
 
-const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }: { products: any, currentPageUrl:string, setCurrentPageUrl:Function }) => {
-
-    interface ProductsInformations {
-        id: number;
-        name: string;
-        year: number;
-        color: string;
-        pantone_value: string;
-    }
+const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }: 
+    { products: any, currentPageUrl:string, setCurrentPageUrl:Function }) => {
 
     const { id } = useParams();
 
@@ -25,7 +19,7 @@ const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }: { products
         for (let i = 0; i < products.length; i++) {
             domColors[i].style.backgroundColor = `${products[i]['color']}`;
         }
-    }, [products]);
+    });
 
     if (!products.length) {
         products = [products];
@@ -36,14 +30,15 @@ const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }: { products
             <div className="showcase_container">
                 {products.length &&
                     products.map((product: ProductsInformations) => {
+                        const { id, name, year, color, pantone_value } = product;
                         return (
-                            <div key={product['id']}
+                            <div key={id}
                                 className="showcase_container-item">
-                                <h4>{product['name']}</h4>
-                                <p>{product['id']} - product ID</p>
-                                <p>{product['year']} - product year</p>
-                                <p>{product['color']} - product color</p>
-                                <p>{product['pantone_value']} - pantone color</p>
+                                <h4>{name}</h4>
+                                <p>{id} - product ID</p>
+                                <p>{year} - product year</p>
+                                <p>{color} - product color</p>
+                                <p>{pantone_value} - pantone color</p>
                             </div>
                         );
                     })}

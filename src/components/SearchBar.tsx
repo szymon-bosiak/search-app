@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { BiSearch } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 
-const SearchBar = ({ products, setProducts, childData, callback, id }: { products: any, setProducts: Function, childData: string, callback: Function, id: string | undefined }) => {
+const SearchBar = ({ products, setProducts, childData, inputValue, id }: 
+    { products: any, setProducts: Function, childData: string, inputValue: Function, id: string | undefined }) => {
 
     const [value, setValue] = useState('');
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ const SearchBar = ({ products, setProducts, childData, callback, id }: { product
         const limit = 3;
 
         setValue(e.target.value.slice(0, limit));
-        callback(e.target.value.slice(0, limit));
+        inputValue(e.target.value.slice(0, limit));
         if (!e.target.value) return setProducts(products)
         return childData;
     }
