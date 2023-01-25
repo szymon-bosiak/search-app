@@ -3,8 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { API_URL_BEFORE, API_URL_AFTER } from '../API';
 import { ProductsInformations, ProductsShowcase } from '../Interfaces'
 
-const ProductsElement = ({ products, setCount, setCurrentPageUrl }: 
-    { products: any, setCount: Function, setCurrentPageUrl: Function }) => {
+const ProductsElement = ({ products, setCount, setCurrentPageUrl }:
+    { products: ProductsShowcase, setCount: Function, setCurrentPageUrl: Function }) => {
 
     const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ const ProductsElement = ({ products, setCount, setCurrentPageUrl }:
 
     useEffect(() => {
         setCount(pageNumber)
-        setCurrentPageUrl(`${API_URL_BEFORE}${pageNumber}${API_URL_AFTER}`); 
+        setCurrentPageUrl(`${API_URL_BEFORE}${pageNumber}${API_URL_AFTER}`);
     }, []);
 
     useEffect(() => {
@@ -22,26 +22,22 @@ const ProductsElement = ({ products, setCount, setCurrentPageUrl }:
         }
     });
 
-    if (!products.length) {
-        products = [products];
-    }
-
-  return (
-    <div>
-          {products.length &&
-              products.map((product: ProductsInformations) => {
-                  const { id, name, year } = product;
-                  return (
-                      <div key={id} onClick={() => navigate(`../product/${product.id}`, { replace: true })}
-                          className="showcase_container-item clickable">
-                          <h4>{name}</h4>
-                          <p>{id} - product ID</p>
-                          <p>{year} - product year</p>
-                      </div>
-                  );
-              })}
-    </div>
-  )
+    return (
+        <div>
+            {products.length &&
+                products.map((product: ProductsInformations) => {
+                    const { id, name, year } = product;
+                    return (
+                        <div key={id} onClick={() => navigate(`../product/${product.id}`, { replace: true })}
+                            className="showcase_container-item clickable">
+                            <h4>{name}</h4>
+                            <p>{id} - product ID</p>
+                            <p>{year} - product year</p>
+                        </div>
+                    );
+                })}
+        </div>
+    )
 }
 
 export default ProductsElement
