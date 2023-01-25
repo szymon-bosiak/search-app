@@ -4,7 +4,7 @@ import { API_URL_BEFORE, API_URL_AFTER } from '../API';
 import { ProductsInformations, ProductsShowcase } from '../Interfaces'
 
 const ProductsElement = ({ products, setCount, setCurrentPageUrl }: 
-    { products: any, setCount: Function, setCurrentPageUrl: Function }) => {
+    { products: ProductsShowcase, setCount: Function, setCurrentPageUrl: Function }) => {
 
     const navigate = useNavigate();
 
@@ -21,10 +21,6 @@ const ProductsElement = ({ products, setCount, setCurrentPageUrl }:
             domColors[i].style.backgroundColor = `${products[i]['color']}`;
         }
     });
-
-    if (!products.length) {
-        products = [products];
-    }
 
   return (
     <div>

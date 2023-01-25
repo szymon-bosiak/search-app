@@ -8,6 +8,7 @@ import ProductInfo from './components/ProductInfo'
 import Pagination from './components/Pagination'
 import ErrorPage from './components/ErrorPage'
 import { API_URL_AFTER, API_URL_BEFORE, DETAIL_API_URL } from './API';
+import { ProductsShowcase } from './Interfaces';
 
 function App() {
 
@@ -15,14 +16,20 @@ function App() {
 
   const [count, setCount] = useState(1);
   const [currentPageUrl, setCurrentPageUrl] = useState(`${API_URL_BEFORE}${id}${API_URL_AFTER}`);
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([] as ProductsShowcase);
   const [childData, setChildData] = useState('');
 
   const navigate = useNavigate();
 
   useEffect(() => {
     axios.get(currentPageUrl).then(res => {
-      setProducts(res.data.data);
+
+      if (!(res.data.data).length) {
+        setProducts([res.data.data])
+      } else {
+        setProducts(res.data.data);
+      }
+
     }).catch(err => navigate(`error/`))
   }, [currentPageUrl]);
 
