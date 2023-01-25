@@ -2,10 +2,10 @@ import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { DETAIL_API_URL } from '../API';
-import { ProductsInformations, ProductsShowcase } from '../Interfaces'
+import { ProductsInformations } from '../Interfaces'
 
 const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }: 
-    { products: ProductsShowcase, currentPageUrl:string, setCurrentPageUrl:Function }) => {
+    { products: any, currentPageUrl:string, setCurrentPageUrl:Function }) => {
 
     const { id } = useParams();
 
@@ -15,10 +15,15 @@ const ProductInfo = ({ products, currentPageUrl, setCurrentPageUrl }:
         }).catch(err => console.log(err))
 
         let domColors = document.querySelectorAll<HTMLElement>('.showcase_container-item');
+
         for (let i = 0; i < products.length; i++) {
             domColors[i].style.backgroundColor = `${products[i]['color']}`;
         }
     });
+
+    if (!products.length) {
+        products = [products];
+    }
 
     return (
         <main className="showcase">

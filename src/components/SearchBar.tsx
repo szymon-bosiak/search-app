@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { BiSearch } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
-import { ProductsShowcase } from '../Interfaces';
 
 const SearchBar = ({ products, setProducts, childData, inputValue, id }: 
-    { products: ProductsShowcase, setProducts: Function, childData: string, inputValue: Function, id: string | undefined }) => {
+    { products: any, setProducts: Function, childData: string, inputValue: Function, id: string | undefined }) => {
 
     const [value, setValue] = useState('');
     const navigate = useNavigate();
